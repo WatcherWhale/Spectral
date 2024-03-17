@@ -1,13 +1,15 @@
 defmodule Http.Supervisor do
   use Supervisor;
+  require Logger
 
   def start_link(_) do
     Supervisor.start_link(__MODULE__, :ok)
   end
 
   def init(:ok) do
-    port = Enum.random([8001, 8002, 8003, 8004, 8005, 8006])
-    IO.puts(port)
+    port = String.to_integer(Application.fetch_env!(:spectral, :port))
+    Logger.info("Listening on :#{port}")
+
     children = [
       {Task.Supervisor, name: Http.TaskSupervisor},
       {

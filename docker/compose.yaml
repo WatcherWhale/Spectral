@@ -1,0 +1,18 @@
+services:
+  spectral-replica: &spectral
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      PORT: 8001
+      CLUSTER_ALGO: "GOSSIP"
+    deploy:
+      mode: replicated
+      replicas: 2
+
+  spectral:
+    <<: *spectral
+    ports:
+      - "8001:8001"
+    deploy:
+      replicas: 1
